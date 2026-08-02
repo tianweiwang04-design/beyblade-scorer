@@ -28,7 +28,7 @@
   --bGlow:rgba(45,140,255,.42); --bSoft:rgba(27,95,214,.32);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{min-height:100%;background:var(--bg)}
+html{min-height:100%;background:var(--bg);overflow-x:hidden}
 body{
   margin:0;min-height:100vh;min-height:100dvh;background:transparent;
   color:var(--txt);font-family:"Chakra Petch",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC",sans-serif;
@@ -59,13 +59,16 @@ body{
 button{font-family:inherit;color:inherit;cursor:pointer;border:0;background:none}
 
 /* ---------- top bar ---------- */
-.top{display:flex;align-items:center;gap:8px;padding:10px 14px;position:relative;z-index:5;flex:none}
-.brand{font-weight:900;letter-spacing:.24em;font-size:12px;
+.top{display:flex;align-items:center;flex-wrap:wrap;gap:8px;position:relative;z-index:5;flex:none;
+  padding:calc(10px + env(safe-area-inset-top)) calc(14px + env(safe-area-inset-right))
+          10px calc(14px + env(safe-area-inset-left))}
+.brand{font-weight:900;letter-spacing:.24em;font-size:12px;flex:none;white-space:nowrap;
   background-image:linear-gradient(90deg,var(--a2),var(--a1) 28%,var(--chrome) 50%,var(--b2) 74%,var(--b1));
   background-clip:text;-webkit-background-clip:text;color:transparent}
 .top .sp{flex:1}
 .tbtn{border:1px solid var(--line);background:rgba(255,255,255,.04);border-radius:999px;
-  padding:7px 14px;font-size:12px;letter-spacing:.08em;font-weight:600;transition:.18s}
+  padding:7px 14px;font-size:12px;letter-spacing:.08em;font-weight:600;transition:.18s;
+  flex:none;white-space:nowrap}
 .tbtn:hover{background:rgba(255,255,255,.1)}
 .tbtn.on{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.35)}
 /* 音效下拉選單 */
@@ -347,6 +350,14 @@ table.st tr:hover td{background:rgba(255,255,255,.03)}
 .src a{color:#7c8098}
 
 @media (max-width:760px){
+  /* 頂列：標題自己一行，四顆按鈕縮小排第二行 —— 不再撐破畫面 */
+  .top{gap:6px;padding-top:calc(6px + env(safe-area-inset-top));padding-bottom:8px}
+  .brand{width:100%;font-size:10px;letter-spacing:.2em;margin-bottom:2px}
+  .tbtn{padding:6px 11px;font-size:11px;letter-spacing:.02em}
+  .board{padding-left:calc(5px + env(safe-area-inset-left));
+         padding-right:calc(5px + env(safe-area-inset-right))}
+  .cfg,.src{padding-bottom:calc(20px + env(safe-area-inset-bottom))}
+  .menu{min-width:170px}
   .rnd{grid-template-columns:26px 1fr 74px 1fr;gap:6px;padding:9px 8px;font-size:11px}
   .rnd .sd b{font-size:11px}
   table.st{font-size:11px}
