@@ -75,19 +75,6 @@ PDF 是由 Canvas 繪製後自行組裝的（Canvas 負責文字所以中文完�
 
 ---
 
-## 零件資料
-
-| 類別 | 數量 |
-| --- | --- |
-| 戰刃 Blade | 150 |
-| 固鎖 Ratchet | 36 |
-| 軸心 Bit | 52 |
-| 輔助戰刃 Assist | 18 |
-
-戰刃已合併同一款的塗裝與版本變體。
-
----
-
 ## 資料儲存
 
 全部存在使用者自己的瀏覽器，**沒有後端，不上傳任何資料**。
@@ -99,20 +86,6 @@ PDF 是由 Canvas 繪製後自行組裝的（Canvas 負責文字所以中文完�
 | 倒數對位設定 | `localStorage` → `beyx_cue` |
 | 隊名 | `localStorage` → `beyx_nameA`、`beyx_nameB` |
 | 自訂倒數錄音 | `IndexedDB` → `beyx_scorer` |
-
----
-
-## 部署
-
-純靜態網站，`index.html` 放在根目錄即可，不需要建置步驟。
-
-Vercel 匯入此 repo 時：
-
-- **Framework Preset** — `Other`
-- **Build Command** — 留空
-- **Output Directory** — 留空
-
-之後 push 到 `main` 會自動重新部署。
 
 ---
 
