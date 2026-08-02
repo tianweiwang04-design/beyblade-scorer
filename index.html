@@ -224,6 +224,31 @@ button{font-family:inherit;color:inherit;cursor:pointer;border:0;background:none
 .beyHead .sp{flex:1}
 .beyHead .del{font-size:11px;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
 .beyHead .del:hover{color:#ff5f72;border-color:rgba(224,31,45,.6)}
+/* 確認後的零件照片橫列 */
+.beyHead .edit{font-size:11px;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.beyHead .edit:hover{color:var(--txt);border-color:rgba(255,255,255,.5)}
+.okBtn{width:100%;border:1px solid transparent;border-radius:12px;padding:11px;font-size:12px;
+  letter-spacing:.18em;font-weight:800;color:#04060f;background:linear-gradient(90deg,var(--a1),var(--b1));
+  transition:.15s}
+.okBtn:hover{filter:brightness(1.12)}
+.okBtn[disabled]{opacity:.34;cursor:not-allowed;background:rgba(255,255,255,.06);
+  color:var(--dim);border-color:var(--line);filter:none}
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:2px 0 12px}
+.cell{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;text-align:center}
+.cell .ph{width:100%;aspect-ratio:1;border-radius:12px;border:1px solid var(--line);
+  background:radial-gradient(70% 70% at 50% 40%,rgba(255,255,255,.07),rgba(255,255,255,.02));
+  display:grid;place-items:center;overflow:hidden;padding:6px}
+.cell .ph img{width:100%;height:100%;object-fit:contain;display:block}
+.cell .ph.empty{border-style:dashed;background:none}
+.cell .ph .fb{font-size:10px;color:var(--dim);line-height:1.5;letter-spacing:.06em;word-break:break-all}
+.A .cell .ph{border-color:rgba(224,31,45,.28)}
+.B .cell .ph{border-color:rgba(27,95,214,.32)}
+.cell b{font-size:12px;font-weight:800;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cell .slot{font-size:9px;letter-spacing:.16em;color:var(--dim)}
+.cell.off b{color:var(--dim);font-weight:500}
+.official{border-top:1px dashed var(--line);padding-top:11px;font-size:16px;font-weight:800;letter-spacing:.02em}
+.official .tags{margin-top:6px}
+.official small{display:block;font-size:10px;color:var(--dim);letter-spacing:.14em;margin-top:5px;font-weight:500}
 .addBey{width:100%;border:1px dashed rgba(255,255,255,.24);border-radius:12px;padding:10px;
   font-size:12px;letter-spacing:.12em;color:var(--dim);background:rgba(255,255,255,.02)}
 .addBey:hover{color:var(--txt);border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.06)}
@@ -248,7 +273,8 @@ button{font-family:inherit;color:inherit;cursor:pointer;border:0;background:none
 .t-Cp{background:#60a5fa}.t-C{background:#818cf8}.t-Dp{background:#c084fc}.t-D{background:#e879f9}
 .t-Ep{background:#94a3b8}.t-E{background:#64748b;color:#fff}.t-n{background:#3f3f52;color:#c9cbe0}
 .ty{font-size:10px;color:var(--dim);margin-left:auto;white-space:nowrap}
-.summary{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px;font-size:14px;font-weight:700;letter-spacing:.03em;min-height:20px}
+.summary{margin-top:12px;border-top:1px dashed var(--line);padding-top:14px;margin-bottom:14px;
+  font-size:14px;font-weight:700;letter-spacing:.03em;min-height:20px}
 .summary small{display:block;font-weight:500;font-size:11px;color:var(--dim);letter-spacing:.1em;margin-top:3px}
 /* ---------- 戰報 / 統計 ---------- */
 .ltabs{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
@@ -422,7 +448,7 @@ table.st tr:hover td{background:rgba(255,255,255,.03)}
   <div id="logBody"></div>
 </div>
 
-<div class="src">零件與天梯資料整理自 <a href="https://stan-yao.github.io/beyblade_x_tier/" target="_blank" rel="noreferrer">Beyblade X Tier 台灣天梯情報站</a>｜計分規則依 TAKARA TOMY《BEYBLADE X REGULATION》</div>
+<div class="src">零件資料、天梯與零件照片整理自 <a href="https://stan-yao.github.io/beyblade_x_tier/" target="_blank" rel="noreferrer">Beyblade X Tier 台灣天梯情報站</a>｜計分規則依 TAKARA TOMY《BEYBLADE X REGULATION》</div>
 
 <div class="sheetWrap" id="audioSheet">
   <div class="sheet">
@@ -470,7 +496,7 @@ table.st tr:hover td{background:rgba(255,255,255,.03)}
    零件資料（Beyblade X）—— 來源：stan-yao.github.io/beyblade_x_tier
    格式：名稱|天梯|類型
    ======================================================================= */
-const BLADE_RAW=`魔導神杖|X|耐久,鮫鯊狂鱗|X|攻擊,空力天馬|S+|攻擊,天馬爆擊|S+|攻擊,隕星龍騎士|S+|攻擊,子彈獅鷲|S+|均衡,惡魔幽冥|S+|均衡,鳳凰飛翼|S|攻擊,蒼穹龍騎士|S|攻擊,蒼龍爆刃|S|攻擊,霜輝銀狼|S|耐久,時鐘幻象|S|耐久,榮耀戰神|S|攻擊,A賞飛龍|A+|特殊,暴龍霸擊|A+|攻擊,蒼龍突擊|A+|攻擊,天堂之環|A+|防禦,天蠍長矛|A+|均衡,魔像奇岩|A+|防禦,古屍詛咒|A+|防禦,古屍詛咒綠|A+|防禦,巨鯨怒濤|A|均衡,武士魂斬|A|均衡,武士星劍|A|攻擊,龍王閃擊BK|A|攻擊,騎士圓甲|A|防禦,帝王威能|A|均衡,鳳凰閃焰|A|防禦,龍王閃擊|A|攻擊,龍王閃擊異色版|A|攻擊,獨角極變|A|均衡,腕龍鞭擊|A|耐久,衝擊龍神|B+|攻擊,大蛇簇擁|B+|攻擊,戰神伏特|B+|攻擊,騎士堡壘|B+|防禦,惡魔鎖鏈|B|均衡,赫燃天鳳|B|均衡,惡魔鎖鏈黑|B|均衡,蒼龍勇氣|B|攻擊,蒼龍勇氣S|B|攻擊,邪神狂怒FE|B|耐久,龍神勇氣|B|耐久,邪神狂怒|B|耐久,鮫鯊鋒鰭|C+|攻擊,蒼穹龍神|C+|攻擊,蒼穹龍神透明版|C+|攻擊,雄鹿鹿角|C+|防禦,極狐九尾|C+|攻擊,魔犬烈焰|C+|耐久,巨鯨烈焰|C+|耐久,焰神滅世|C+|均衡,暴龍咆哮|C+|攻擊,惡魔紅鐮|C|均衡,魔導至尊R|C|耐久,黃蜂要塞|C|均衡,海妖扭動|C|耐久,英仙幽冥B|C|防禦,魔導至尊|C|耐久,英仙幽冥|C|防禦,惡魔獵魂|C|均衡,戰犀獵魂|C|均衡,銀狼狩獵|C|耐久,蒼龍神劍|D+|攻擊,騎士重盾|D+|防禦,蒼龍神劍火紅版|D+|攻擊,蒼龍利刃|D+|攻擊,三角強襲|D+|防禦,鱷魚粉碎|D+|攻擊,蒼龍神劍閃耀貼紙版|D+|攻擊,蒼龍神劍版本2.0|D+|攻擊,鳳凰尾翼|D+|耐久,魔導幻箭|D|耐久,王蛇鞭尾|D|耐久,魔導幻箭水籃版|D|耐久,幻獸刺心|D|均衡,皓戰猛虎|D|均衡,玄冥戰甲|D|防禦,猛獁獠牙|D|均衡,幽靈元魂|D|防禦,惡魔重錘|D|均衡,猛瑪長牙|D|均衡,雄獅巔峰|D|防禦,幽靈元魂籤王|D|耐久,飛龍旋翼|E+|耐久,護城龍神|E+|均衡,戰羊阻截|E+|防禦,鮫鯊撕裂|E+|耐久,翼龍神翼|E+|耐久,騎士長槍|E|防禦,雄獅獵爪|E|均衡,戰犀重角|E|防禦,魔獸護甲|E|防禦,悍熊猛爪|E|防禦,武士鋼鐵|E|均衡,忍者刺刀|E|防禦,忍者闇影|E|防禦,歐比王肯諾比|-|防禦,丘巴卡|-|耐久,風暴兵|-|防禦,紅浩克|-|攻擊,美國隊長|-|攻擊,終極蜘蛛人|-|耐久,綠惡魔|-|耐久,銀狼烈焰|-|攻擊,魔犬獵魂|-|耐久,地獄鐮刀特別跨界陀螺|-|均衡,蒼龍至尊S|-|耐久,烈焰飛鳳S|-|均衡,銀牙烈虎|-|均衡,雷霆天龍|-|攻擊,堅甲戰龜|-|防禦,暴風天馬|-|攻擊,龍騎士S|-|攻擊,天翼戰神|-|攻擊,神力聖劍|-|攻擊,烈焰飛鳳S闇黑版|-|均衡,巨岩雄獅|-|防禦,暴風巨神|-|均衡,鋼鐵人|-|耐久,薩諾斯|-|均衡,蜘蛛人|-|均衡,猛毒|-|防禦,路克天行者|-|耐久,達斯維達|-|均衡,曼達洛人|-|攻擊,星區長吉迪恩|-|防禦,柯博文|-|均衡,密卡登|-|耐久,金剛王|-|攻擊,天王星|-|防禦,雄獅獠牙|-|攻擊,飛龍懸浮|-|防禦,飛龍懸浮DMM抽獎A獎|-|防禦,暴龍|-|防禦,滄龍|-|攻擊,翼龍|-|防禦,棘龍|-|均衡,福音戰士至尊B零號機版本|-|均衡,福音戰士勇氣A初號機版本|-|攻擊,福音戰士九尾T２號機版本|-|攻擊,迪卡狂怒FT複合型態|-|均衡,迪卡狂怒FT力量型態|-|均衡,惡魔至尊|-|耐久,魔犬幽冥|-|防禦,騎士圓甲改造組|-|攻擊,鳳凰翔羽|-|攻擊,惡魔勇氣|-|攻擊,天馬九尾|-|攻擊,焰神勇氣|-|攻擊`;
+const BLADE_RAW=`魔導神杖(綠)|X|耐久,魔導神杖 金屬塗層:燦金|X|耐久,魔導神杖|X|耐久,魔導神杖 特別版|X|耐久,鮫鯊狂鱗|X|攻擊,空力天馬(紅)|S+|攻擊,天馬爆擊(紅)|S+|攻擊,空力天馬(藍)|S+|攻擊,天馬爆擊|S+|攻擊,隕星龍騎士(左)|S+|攻擊,子彈獅鷲|S+|均衡,惡魔幽冥|S+|均衡,鳳凰飛翼 BX-23|S|攻擊,蒼穹龍騎士(左)|S|攻擊,蒼穹龍騎士(黑)|S|攻擊,蒼龍爆刃(紅)|S|攻擊,蒼龍爆刃 金屬塗層:火紅|S|攻擊,蒼穹龍騎士 金屬塗層:闇黑|S|攻擊,蒼龍爆刃 金屬塗層:藍 FC巴塞隆納版|S|攻擊,蒼龍爆刃 金屬塗層:珍珠白|S|攻擊,蒼龍爆刃 金屬塗層:青|S|攻擊,蒼龍爆刃 金屬塗層:闇黑|S|攻擊,蒼龍爆刃 金屬塗層:紫|S|攻擊,鳳凰飛翼 金屬塗層:闇黑 キタニタツヤ 版|S|攻擊,蒼穹龍騎士 金屬塗層:白色 日本職業足球聯盟版|S|攻擊,蒼龍爆刃 CX-08-04|S|攻擊,蒼穹龍騎士|S|攻擊,蒼龍爆刃 UX-01|S|攻擊,蒼龍爆刃 特別版|S|攻擊,霜輝銀狼|S|耐久,時鐘幻象 UX-16-01|S|耐久,時鐘幻象 UX-16-02|S|耐久,時鐘幻象 UX-16-03|S|耐久,榮耀戰神|S|攻擊,霜輝銀狼 金屬塗層:紫|S|耐久,A賞飛龍|A+|特殊,暴龍霸擊(紅) BX-31-01|A+|攻擊,暴龍霸擊|A+|攻擊,鳳凰飛翼(藍)|A+|攻擊,蒼龍突擊|A+|攻擊,天堂之環 BX-50-01|A+|防禦,天堂之環 BX-50-02|A+|防禦,鳳凰飛翼 BXC-05|A+|攻擊,天蠍長矛 金屬塗層:品紅|A+|均衡,蒼龍突擊 金屬塗層:燦金|A+|攻擊,蒼龍突擊 金屬塗層:白銀|A+|攻擊,蒼龍突擊 金屬塗層:黃銅|A+|攻擊,魔像奇岩(綠)|A+|防禦,暴龍霸擊 (粉)|A+|攻擊,暴龍霸擊(紅) UX-10-02|A+|攻擊,魔像奇岩|A+|防禦,天蠍長矛|A+|均衡,古屍詛咒|A+|防禦,古屍詛咒 綠|A+|防禦,巨鯨怒濤(綠)|A|均衡,巨鯨怒濤 BX-36-02|A|均衡,巨鯨怒濤 BX-36-03|A|均衡,武士魂斬|A|均衡,武士星劍 金屬塗層:橘|A|攻擊,龍王閃擊BK 金屬塗層:黃|A|攻擊,騎士圓甲 金屬塗層:夜藍|A|防禦,武士星劍(世足)|A|攻擊,巨鯨怒濤 金屬塗層:藍|A|均衡,巨鯨怒濤(黃)|A|均衡,帝王威能|A|均衡,鳳凰閃焰|A|防禦,龍王閃擊|A|攻擊,龍王閃擊 異色版|A|攻擊,獨角極變(藍)|A|均衡,獨角極變(粉)|A|均衡,武士星劍(紅)|A|攻擊,腕龍鞭擊(紫)|A|耐久,腕龍鞭擊(黃)|A|耐久,腕龍鞭擊(黑)|A|耐久,衝擊龍神 BX-50-03|B+|攻擊,大蛇簇擁|B+|攻擊,戰神伏特|B+|攻擊,騎士堡壘|B+|防禦,武士星劍|B+|攻擊,騎士圓甲|B+|防禦,衝擊龍神 UX-11|B+|攻擊,惡魔鎖鏈 BX-21-01|B|均衡,赫燃天鳳 BX-38|B|均衡,惡魔鎖鏈 黑|B|均衡,蒼龍勇氣 金屬塗層:闇黑|B|攻擊,蒼龍勇氣S 金屬塗層:燦金|B|攻擊,蒼龍勇氣S 金屬塗層:白銀|B|攻擊,蒼龍勇氣S 金屬塗層:黃銅|B|攻擊,邪神狂怒FE 金屬塗層:燦金|B|耐久,龍神勇氣|B|耐久,蒼龍勇氣|B|攻擊,蒼龍勇氣 特別版|B|攻擊,邪神狂怒|B|耐久,赫燃天鳳 CX-17-06|B|均衡,鮫鯊鋒鰭(紫)|C+|攻擊,鮫鯊鋒鰭(黃)|C+|攻擊,鮫鯊鋒鰭 BX-20-02|C+|攻擊,鮫鯊鋒鰭 BX-31-05|C+|攻擊,蒼穹龍神|C+|攻擊,鮫鯊鋒鰭(藍)|C+|攻擊,鮫鯊鋒鰭 金屬塗層:藍|C+|攻擊,蒼穹龍神 透明版|C+|攻擊,鮫鯊鋒鰭 金屬塗層:闇黑|C+|攻擊,雄鹿鹿角|C+|防禦,蒼穹龍神 金屬塗層:藍|C+|攻擊,極狐九尾(白)|C+|攻擊,極狐九尾(黑)|C+|攻擊,極狐九尾(金)|C+|攻擊,魔犬烈焰|C+|耐久,巨鯨烈焰|C+|耐久,焰神滅世|C+|均衡,暴龍咆哮|C+|攻擊,惡魔紅鐮 BX-02|C|均衡,惡魔紅鐮 BX-08-01|C|均衡,惡魔紅鐮(綠)|C|均衡,惡魔紅鐮(金)|C|均衡,惡魔紅鐮 金屬塗層:燦金|C|均衡,魔導至尊R 金屬塗層:闇黑|C|耐久,黃蜂要塞|C|均衡,海妖扭動|C|耐久,英仙幽冥B 金屬塗層:燦金|C|防禦,魔導至尊|C|耐久,英仙幽冥|C|防禦,英仙幽冥 特別版|C|防禦,惡魔獵魂|C|均衡,戰犀獵魂|C|均衡,銀狼狩獵|C|耐久,蒼龍神劍 BX-01|D+|攻擊,騎士重盾 BX-04|D+|防禦,騎士重盾(藍)|D+|防禦,蒼龍神劍 特別版|D+|攻擊,騎士重盾 BX-08-02|D+|防禦,蒼龍神劍(黑)|D+|攻擊,騎士重盾(青)|D+|防禦,蒼龍神劍 火紅版|D+|攻擊,蒼龍利刃 BX-20-01|D+|攻擊,騎士重盾 BX-20-03|D+|防禦,蒼龍神劍 BX-22|D+|攻擊,惡魔鎖鏈 BX-31-03|D+|均衡,蒼龍利刃 BX-31-04|D+|攻擊,三角強襲|D+|防禦,蒼龍神劍 BXA-01|D+|攻擊,蒼龍神劍 金屬塗層:燦金|D+|攻擊,蒼龍神劍 金屬塗層:白銀|D+|攻擊,蒼龍神劍 金屬塗層:黃銅|D+|攻擊,鱷魚粉碎|D+|攻擊,蒼龍神劍 閃耀貼紙版|D+|攻擊,蒼龍利刃 BXG-14|D+|攻擊,蒼龍神劍 金屬塗層:珍珠白|D+|攻擊,蒼龍利刃 金屬塗層:珍珠白|D+|攻擊,蒼龍神劍 版本2.0|D+|攻擊,蒼龍神劍 金屬塗層:闇黑|D+|攻擊,騎士重盾 金屬塗層:燦金|D+|防禦,鳳凰尾翼(黑)|D+|耐久,鳳凰尾翼|D+|耐久,蒼龍利刃 UX-18-05|D+|攻擊,魔導幻箭 BX-03|D|耐久,魔導幻箭 BX-05|D|耐久,魔導幻箭 BX-08-03|D|耐久,魔導幻箭(紅)|D|耐久,王蛇鞭尾 BX-16-01|D|耐久,王蛇鞭尾 BX-16-02|D|耐久,王蛇鞭尾 BX-16-03|D|耐久,魔導幻箭 水籃版|D|耐久,魔導幻箭 BX-21-03|D|耐久,王蛇鞭尾 BX-24-04|D|耐久,魔導幻箭 BX-24-06|D|耐久,幻獸刺心 BX-26|D|均衡,皓戰猛虎 BX-33|D|均衡,玄冥戰甲(綠)|D|防禦,玄冥戰甲(黃)|D|防禦,幻獸刺心 BX-35-03|D|均衡,王蛇鞭尾 BX-35-06|D|耐久,猛獁獠牙(黑)|D|均衡,幽靈元魂|D|防禦,惡魔重錘 金屬塗層:紅 FC巴塞隆納版|D|均衡,猛瑪長牙(闇黑)|D|均衡,雄獅巔峰 CX-05-04|D|防禦,玄冥戰甲|D|防禦,惡魔重錘 CX-17-04|D|均衡,惡魔重錘 UX-02|D|均衡,雄獅巔峰 UX-06|D|防禦,惡魔重錘(藍)|D|攻擊,幽靈元魂(紫) 籤王|D|耐久,幽靈元魂(綠)|D|耐久,皓戰猛虎 UX-18-06|D|均衡,飛龍旋翼(綠)|E+|耐久,飛龍旋翼(黃)|E+|耐久,護城龍神(紅)|E+|均衡,護城龍神 BX-39-02|E+|均衡,護城龍神 BX-39-03|E+|均衡,戰羊阻截|E+|防禦,鮫鯊撕裂|E+|耐久,飛龍旋翼 UX-07-02|E+|耐久,翼龍神翼|E+|耐久,飛龍旋翼 UX-12-06|E+|耐久,騎士長槍 BX-13|E|防禦,雄獅獵爪 BX-15|E|均衡,戰犀重角 BX-19|E|防禦,騎士長槍 BX-21-02|E|防禦,騎士長槍 BX-24-03|E|防禦,雄獅獵爪 BX-24-05|E|均衡,魔獸護甲 BX-27-01|E|防禦,魔獸護甲 BX-27-02|E|防禦,魔獸護甲 BX-27-03|E|防禦,戰犀重角 BX-31-06|E|防禦,悍熊猛爪|E|防禦,武士鋼鐵|E|均衡,雄獅獵爪(燦金)|E|均衡,忍者刺刀|E|防禦,忍者闇影(紫)|E|防禦,忍者闇影(黑)|E|防禦,忍者闇影(黃)|E|防禦,魔獸護甲 UX-07-03|E|防禦,忍者闇影(藍)|E|防禦,雄獅獵爪 UX-12-04|E|均衡,歐比王肯諾比|-|防禦,丘巴卡|-|耐久,風暴兵|-|防禦,紅浩克|-|攻擊,美國隊長|-|攻擊,終極蜘蛛人|-|耐久,綠惡魔|-|耐久,銀狼烈焰|-|攻擊,魔犬獵魂|-|耐久,地獄鐮刀 特別跨界陀螺|-|均衡,蒼龍至尊S 金屬塗層:水藍|-|耐久,烈焰飛鳳S|-|均衡,銀牙烈虎|-|均衡,雷霆天龍(上升攻擊型)|-|攻擊,雷霆天龍(連擊型)|-|攻擊,堅甲戰龜|-|防禦,暴風天馬 BXG-12-00|-|攻擊,龍騎士S BXG-12-01|-|攻擊,暴風天馬 BXG-12-02|-|攻擊,天翼戰神|-|攻擊,神力聖劍|-|攻擊,烈焰飛鳳S 闇黑版|-|均衡,巨岩雄獅|-|防禦,暴風巨神|-|均衡,龍騎士S BXG-22|-|攻擊,鋼鐵人|-|耐久,薩諾斯|-|均衡,蜘蛛人|-|均衡,猛毒|-|防禦,路克天行者|-|耐久,達斯維達|-|均衡,曼達洛人|-|攻擊,星區長吉迪恩|-|防禦,柯博文|-|均衡,密卡登|-|耐久,金剛王|-|攻擊,天王星|-|防禦,雄獅獠牙|-|攻擊,飛龍懸浮 金屬塗層:紫|-|防禦,飛龍懸浮 DMM 抽獎A獎|-|防禦,暴龍|-|防禦,滄龍|-|攻擊,翼龍|-|防禦,棘龍|-|均衡,福音戰士至尊 B 零號機版本|-|均衡,福音戰士勇氣 A 初號機版本|-|攻擊,福音戰士九尾 T ２號機版本|-|攻擊,榮耀戰神 金屬塗層:藍色|-|攻擊,迪卡狂怒 FT 複合型態|-|均衡,迪卡狂怒 FT 力量型態|-|均衡,惡魔至尊|-|耐久,魔犬幽冥|-|防禦,騎士圓甲改造組 UX-10-05|-|攻擊,騎士圓甲改造組 UX-10-06|-|攻擊,鳳凰翔羽(黑)|-|攻擊,惡魔勇氣|-|攻擊,天馬九尾|-|攻擊,焰神勇氣|-|攻擊,飛龍懸浮|-|防禦`;
 
 const RATCHET_RAW=`1-50|X,1-60|X,3-60|X,7-60|X,9-60|X,1-70|S,4-50|S,5-60|S,6-60|S,9-70|S,0-60|A,4-60|A,7-55|A,7-70|A,8-70|A,0-70|B,0-80|B,3-70|B,7-80|B,9-80|B,4-55|C,5-70|C,6-70|C,9-65|C,M-85|C,1-80|D,3-80|D,3-85|D,4-70|D,6-80|D,2-60|E,2-70|E,2-80|E,4-80|E,5-80|E,8-80|-`;
 
@@ -497,6 +523,25 @@ const DATA={
 };
 const tierCls=t=>({'X':'t-X','S+':'t-Sp','S':'t-S','A+':'t-Ap','A':'t-A','B+':'t-Bp','B':'t-B',
   'C+':'t-Cp','C':'t-C','D+':'t-Dp','D':'t-D','E+':'t-Ep','E':'t-E'}[t]||'t-n');
+
+/* =======================================================================
+   零件照片：名稱 → i.ibb.co 圖片（來源：Beyblade X Tier 台灣天梯情報站）
+   格式「名稱~圖床ID~檔名代碼」；代碼 0-3 為常見檔名，r/b/a/l 為共同前綴，! 為原樣
+   ======================================================================= */
+const IMG_RAW=`魔導神杖(綠)~cXrDPTwk~0,魔導神杖 金屬塗層:燦金~rG3TQMKC~!blade-BXH-09-BXH-09-BL-EVE-936138-01w,魔導神杖~7J5TLQtf~2,魔導神杖 特別版~pBmSqg8J~0,鮫鯊狂鱗~Q71NLfM5~2,空力天馬(紅)~spvDC7LM~1,天馬爆擊(紅)~8pxRT50~1,空力天馬(藍)~60kwzYTv~2,天馬爆擊~2YYvnG14~2,隕星龍騎士(左)~RG46Mfwt~2,子彈獅鷲~k6kDdB7s~!lel-TDs-N0-Pl-JZRlo-SCNb-TXem0-PZg-ZEQj-OWlp8hb-Gmp,惡魔幽冥~PvHSxGy8~!blade-UX-21-01-UX-21-01-BL-PRD-085546-01w,鳳凰飛翼 BX-23~7JDWgWBH~3,蒼穹龍騎士(左)~6ct6nZpS~3,蒼穹龍騎士(黑)~YBjQS6rG~1,蒼龍爆刃(紅)~xKLpFzqg~1,蒼龍爆刃 金屬塗層:火紅~Nd4L9v8m~!blade-BXC-03-BXC-03-BL-PRD-941460-00w,蒼穹龍騎士 金屬塗層:闇黑~d4FthgqL~!blade-BXG-09-BXG-09-BL-PRD-941576-00w,蒼龍爆刃 金屬塗層:藍 FC巴塞隆納版~JW5Xn7hB~!blade-BXG-18-BXG-18-BL-PRD-952312-00w,蒼龍爆刃 金屬塗層:珍珠白~bM2r6S9x~!blade-BXG-25-02-BXG-25-02-BL-PRD-953982-02w,蒼龍爆刃 金屬塗層:青~pB9Jp4yW~!blade-BXG-31-01-BXG-31-01-BL-PRD-957799-01w,蒼龍爆刃 金屬塗層:闇黑~v64xQhtN~!blade-BXG-31-02-BXG-31-02-BL-PRD-957799-02w,蒼龍爆刃 金屬塗層:紫~Gf96PtNz~!blade-BXG-31-03-BXG-31-03-BL-PRD-957799-03w,鳳凰飛翼 金屬塗層:闇黑 キタニタツヤ 版~ymHCLXMH~!blade-BXG-35-BXG-35-BL-PRD-982128-00w,蒼穹龍騎士 金屬塗層:白色 日本職業足球聯盟版~GfzfRrV9~!blade-BXG-53-BXG-53-BL-PRD-098843-00w,蒼龍爆刃 CX-08-04~nMz6ZrLW~0,蒼穹龍騎士~r2mfSqsC~0,蒼龍爆刃 UX-01~TpGXMLg~0,蒼龍爆刃 特別版~5Wmg1W0R~0,霜輝銀狼~5h4jB6t2~3,時鐘幻象 UX-16-01~Y4XyYgDM~2,時鐘幻象 UX-16-02~8nZkJzyJ~1,時鐘幻象 UX-16-03~twKFrPHZ~1,榮耀戰神~rfQD5Ms8~0,霜輝銀狼 金屬塗層:紫~cSWfBRCn~!blade-UX-21-02-UX-21-02-BL-PRD-085546-02w,A賞飛龍~ZRm5NZVn~!Ap,暴龍霸擊(紅) BX-31-01~VWbjCT9g~0,暴龍霸擊~ZRd4KqZx~0,鳳凰飛翼(藍)~wFg5f430~0,蒼龍突擊~qMShhHNf~2,天堂之環 BX-50-01~Q7kVGQVT~0,天堂之環 BX-50-02~9mrFcyRK~0,鳳凰飛翼 BXC-05~HTkQZnkr~!blade-BXC-05-BXC-05-BL-PRD-953654-00w,天蠍長矛 金屬塗層:品紅~nNy4w0Bs~!blade-BXG-61-BXG-61-BL-PRD-080558-00w,蒼龍突擊 金屬塗層:燦金~hRy7Hj1L~!blade-BXH-25-01-BXH-25-01-BL-EVE-077428-01w,蒼龍突擊 金屬塗層:白銀~wNs41BxM~!blade-BXH-25-02-BXH-25-02-BL-EVE-077428-02w,蒼龍突擊 金屬塗層:黃銅~gn5Dnd9~!blade-BXH-25-03-BXH-25-03-BL-EVE-077428-03w,魔像奇岩(綠)~ymb9GDmk~0,暴龍霸擊 (粉)~5hv6ZL3X~0,暴龍霸擊(紅) UX-10-02~vvdRtQjt~2,魔像奇岩~qYBTzRfC~0,天蠍長矛~4gsBXw39~3,古屍詛咒~Kpn6t4YC~3,古屍詛咒 綠~fzM0FBdr~0,巨鯨怒濤(綠)~KjXvtrfB~0,巨鯨怒濤 BX-36-02~Vc6Cvknx~0,巨鯨怒濤 BX-36-03~s9vwbqfV~0,武士魂斬~R4MGyGcR~0,武士星劍 金屬塗層:橘~dwp61Qft~!blade-BXC-12-BXC-12-BL-PRD-993773-00w,龍王閃擊BK 金屬塗層:黃~0jcHqvdL~!blade-BXC-19-BXC-19-BL-PRD-072447-00w,騎士圓甲 金屬塗層:夜藍~8LkFZhss~!blade-BXG-42-BXG-42-BL-PRD-919124-00w,武士星劍(世足)~VWL6Mgb4~1,巨鯨怒濤 金屬塗層:藍~m5Rqzdmf~!blade-BXG-56-BXG-56-BL-PRD-085690-00w,巨鯨怒濤(黃)~nMrTq33q~0,帝王威能~3mVtnZzG~0,鳳凰閃焰~fz3j4jDn~0,龍王閃擊~Zp6LDhkW~3,龍王閃擊 異色版~nNtz2f9c~1,獨角極變(藍)~qXHVjW7~2,獨角極變(粉)~pBgytwPX~1,武士星劍(紅)~gZPwM59b~2,腕龍鞭擊(紫)~FL68g3Tx~2,腕龍鞭擊(黃)~TDcc1wV9~1,腕龍鞭擊(黑)~MkV6kPtv~1,衝擊龍神 BX-50-03~99KgQ1kc~0,大蛇簇擁~1G6fBycB~!blade-BXC-15-BXC-15-BL-PRD-997023-00w,戰神伏特~nNHfFppj~1,騎士堡壘~XZ3vbxx6~0,武士星劍~20Ds5SzG~0,騎士圓甲~R43HWCgG~2,衝擊龍神 UX-11~0Sr5t6k~0,惡魔鎖鏈 BX-21-01~Kx9BqDHY~0,赫燃天鳳 BX-38~k2Q7BJ0T~0,惡魔鎖鏈 黑~8n4TSfbV~1,蒼龍勇氣 金屬塗層:闇黑~chg1GXwf~!blade-BXG-51-BXG-51-BL-PRD-080572-00w,蒼龍勇氣S 金屬塗層:燦金~h1cMnhPp~!blade-BXH-16-01-BXH-16-01-BL-EVE-982524-01w,蒼龍勇氣S 金屬塗層:白銀~1tc7TJPW~!blade-BXH-16-02-BXH-16-02-BL-EVE-982524-02w,蒼龍勇氣S 金屬塗層:黃銅~1Yts8B2t~!blade-BXH-16-03-BXH-16-03-BL-EVE-982524-03w,邪神狂怒FE 金屬塗層:燦金~9HnnYbF7~!blade-BXH-22-BXH-22-BL-EVE-088899-00w,龍神勇氣~PGCFjwgj~0,蒼龍勇氣~xP8TgMk~0,蒼龍勇氣 特別版~DPBC4B2P~1,邪神狂怒~VchmS4Pm~0,赫燃天鳳 CX-17-06~4Zc4skPH~0,鮫鯊鋒鰭(紫)~yFzFdYvj~0,鮫鯊鋒鰭(黃)~nMQ5S5Zg~1,鮫鯊鋒鰭 BX-20-02~93bZBV9F~1,鮫鯊鋒鰭 BX-31-05~Swp92bmN~0,蒼穹龍神~YTTLXFxr~0,鮫鯊鋒鰭(藍)~fYDyfxqj~1,鮫鯊鋒鰭 金屬塗層:藍~35ChQBcG~!blade-BXG-06-BXG-06-BL-PRD-936121-00w,蒼穹龍神 透明版~QFxNDkLr~0,鮫鯊鋒鰭 金屬塗層:闇黑~h1ych38b~!blade-BXG-55-BXG-55-BL-PRD-085706-00w,雄鹿鹿角~Wpv2VLMX~0,蒼穹龍神 金屬塗層:藍~gQ4z35W~!blade-BXH-01-BXH-01-BL-PRD-910510-00w,極狐九尾(白)~SwW17ynD~0,極狐九尾(黑)~Rp1std6X~0,極狐九尾(金)~KxRv3bx1~0,魔犬烈焰~4wXtG85J~0,巨鯨烈焰~XZ85z1yY~0,焰神滅世~FkMzT42B~0,暴龍咆哮~6RcZ4579~2,惡魔紅鐮 BX-02~V00HGv8c~0,惡魔紅鐮 BX-08-01~Tqp0b79D~1,惡魔紅鐮(綠)~5x5gB3Kw~1,惡魔紅鐮(金)~nN2jP1Vv~1,惡魔紅鐮 金屬塗層:燦金~Y7KSjqW3~!blade-BXG-03-BXG-03-BL-PRD-913344-00w,魔導至尊R 金屬塗層:闇黑~zTS1b0gQ~!blade-BXG-43-BXG-43-BL-PRD-930907-00w,黃蜂要塞~jP7gfzWJ~0,海妖扭動~v68j5fG8~0,英仙幽冥B 金屬塗層:燦金~3YGshtQ7~!blade-BXH-15-BXH-15-BL-EVE-958772-01w,魔導至尊~wF1gLr7L~0,英仙幽冥~qFX315B1~0,英仙幽冥 特別版~SXjSWYrZ~1,惡魔獵魂~xS059MKp~0,戰犀獵魂~B5fKrN0f~0,銀狼狩獵~JwjGWC0z~0,蒼龍神劍 BX-01~93YhYZ8Y~0,騎士重盾 BX-04~bR83Wcrk~0,騎士重盾(藍)~9mjy25x6~1,蒼龍神劍 特別版~93YhYZ8Y~0,騎士重盾 BX-08-02~mC0yHkhb~0,蒼龍神劍(黑)~B9fBv0g~1,騎士重盾(青)~PZS1cGmj~1,蒼龍神劍 火紅版~kV9LF12j~1,蒼龍利刃 BX-20-01~jk7KXkqp~2,騎士重盾 BX-20-03~S4LD9pbK~1,蒼龍神劍 BX-22~tpLKk5Kn~0,惡魔鎖鏈 BX-31-03~VY5yhPN3~0,蒼龍利刃 BX-31-04~MmRTwp0~0,三角強襲~MyNv1sm2~0,蒼龍神劍 BXA-01~X9Xv43C~!blade-BXA-01-BXA-01-BL-PRD-939672-00w,蒼龍神劍 金屬塗層:燦金~5hr029dW~!blade-BXC-00-01-BXC-00-01-BL-EVE-910909-01w,蒼龍神劍 金屬塗層:白銀~qLVfjP8Y~!blade-BXC-00-02-BXC-00-02-BL-EVE-910909-02w,蒼龍神劍 金屬塗層:黃銅~hJyqJnC2~!blade-BXC-00-03-BXC-00-03-BL-EVE-910909-03w,鱷魚粉碎~LTV2DFD~0,蒼龍神劍 閃耀貼紙版~99K3skdx~!blade-BXG-12-04-BXG-12-04-BL-PRD-946816-04w,蒼龍利刃 BXG-14~gbFmCXXf~0,蒼龍神劍 金屬塗層:珍珠白~DgQpkmYV~!blade-BXG-25-01-BXG-25-01-BL-PRD-953982-01w,蒼龍利刃 金屬塗層:珍珠白~TG0yhYh~!blade-BXG-25-03-BXG-25-03-BL-PRD-953982-03w,蒼龍神劍 版本2.0~vvzcc1pz~!blade-BXG-49-BXG-49-BL-PRD-603873-00w,蒼龍神劍 金屬塗層:闇黑~jkWJHnpZ~!blade-BXG-52-BXG-52-BL-PRD-090960-00w,騎士重盾 金屬塗層:燦金~2765gXkV~!blade-BXH-02-BXH-02-BL-EVE-910879-01w,鳳凰尾翼(黑)~bgfn4wj5~0,鳳凰尾翼~yFKp6VBC~0,蒼龍利刃 UX-18-05~hJHNq4vV~0,魔導幻箭 BX-03~Gv43b1Y5~0,魔導幻箭 BX-05~93qpkJ6m~1,魔導幻箭 BX-08-03~XxWCvdS5~1,魔導幻箭(紅)~8DPR18tm~1,王蛇鞭尾 BX-16-01~Rpbc2LdF~0,王蛇鞭尾 BX-16-02~JwMdxyy7~1,王蛇鞭尾 BX-16-03~hJkMtnHh~1,魔導幻箭 水籃版~gLgQpkg8~1,魔導幻箭 BX-21-03~0VmvnJhY~1,王蛇鞭尾 BX-24-04~HTnyFsGR~0,魔導幻箭 BX-24-06~GfJvyhrj~0,幻獸刺心 BX-26~dst33fBQ~0,皓戰猛虎 BX-33~Lhq4jzx4~0,玄冥戰甲(綠)~Qj1cyBMX~0,玄冥戰甲(黃)~Q3Q3kTpK~0,幻獸刺心 BX-35-03~TqF975tZ~0,王蛇鞭尾 BX-35-06~3yFTX5Nv~0,猛獁獠牙(黑)~sdq4PV91~2,幽靈元魂~rG7vsKS1~0,惡魔重錘 金屬塗層:紅 FC巴塞隆納版~twS7pSX5~!blade-BXG-19-BXG-19-BL-PRD-952329-00w,猛瑪長牙(闇黑)~S4XNK9mz~1,雄獅巔峰 CX-05-04~gZ3PkZ3f~0,玄冥戰甲~7xZpD0vK~0,惡魔重錘 CX-17-04~r2KzVdpj~0,惡魔重錘 UX-02~8Rcwcgw~0,雄獅巔峰 UX-06~LD0xzDLX~0,惡魔重錘(藍)~hJ2Qh15K~1,幽靈元魂(紫) 籤王~v4PGj3FR~2,幽靈元魂(綠)~C3YYfwgD~0,皓戰猛虎 UX-18-06~MykVT9ZR~0,飛龍旋翼(綠)~ZzmfHm4G~0,飛龍旋翼(黃)~SCCsvCj~0,護城龍神(紅)~rRcDxvsw~0,護城龍神 BX-39-02~Nnbt4wdz~0,護城龍神 BX-39-03~0ymvNxN1~0,戰羊阻截~b5WHrXdD~0,鮫鯊撕裂~XfSdSDGM~0,飛龍旋翼 UX-07-02~TBck0Zv0~0,翼龍神翼~Q7MZhVNk~2,飛龍旋翼 UX-12-06~sddHKWZn~0,騎士長槍 BX-13~QFyjd5zf~0,雄獅獵爪 BX-15~Wp2nfqjH~0,戰犀重角 BX-19~8DY1DCHs~0,騎士長槍 BX-21-02~CsMfQFL3~1,騎士長槍 BX-24-03~Gv5qRqvf~0,雄獅獵爪 BX-24-05~NdpVzxSt~0,魔獸護甲 BX-27-01~gb7xFkHB~0,魔獸護甲 BX-27-02~pjxL4Hh8~0,魔獸護甲 BX-27-03~fVZG79yL~0,戰犀重角 BX-31-06~KpQMbdsB~0,悍熊猛爪~B5DfyPGz~0,武士鋼鐵~prGBm3st~0,雄獅獵爪(燦金)~Lz1T6W3X~1,忍者刺刀~Y9nrksq~0,忍者闇影(紫)~bj9pZGpW~0,忍者闇影(黑)~QWk7yD9~0,忍者闇影(黃)~6JXNbcjw~0,魔獸護甲 UX-07-03~d0xRRNsb~0,忍者闇影(藍)~4ZVfMBqF~0,雄獅獵爪 UX-12-04~7dLG6Q07~0,歐比王肯諾比~7xXhvqpT~2,丘巴卡~3yXk338Z~!blade-BX-00-02-BX-00-02-BL-PRD-305749-01w,風暴兵~SDBN6Rpg~!blade-BX-00-02-BX-00-02-BL-PRD-305749-02w,紅浩克~nhT88Cj~!blade-BX-00-03-BX-00-03-BL-PRD-305718-02w,美國隊長~d4FnKQjX~!blade-BX-00-03-BX-00-03-BL-PRD-305718-01w,終極蜘蛛人~jvp3TJk3~!blade-BX-00-04-BX-00-04-BL-PRD-305725-01w,綠惡魔~ZpphTq9C~!blade-BX-00-04-BX-00-04-BL-PRD-305725-02w,銀狼烈焰~Z67nxJhy~0,魔犬獵魂~GQJCXRFH~0,地獄鐮刀 特別跨界陀螺~MxJPt76w~!blade-BXC-02-BXC-02-BL-PRD-932970-00w,蒼龍至尊S 金屬塗層:水藍~kVVX181T~!blade-BXC-13-BXC-13-BL-PRD-993872-00w,烈焰飛鳳S~tMWjhbWN~0,銀牙烈虎~9Hph9MP0~0,雷霆天龍(上升攻擊型)~rKywpCGp~0,雷霆天龍(連擊型)~PvX7S5qq~0,堅甲戰龜~nM1KrHRL~0,暴風天馬 BXG-12-00~NgXZYg0x~!blade-BXG-12-00-BXG-12-00-BL-PRD-096504-00w,龍騎士S BXG-12-01~0ppL3hQ9~0,暴風天馬 BXG-12-02~spq5FVt4~0,天翼戰神~pjf5kTnm~0,神力聖劍~whrzQj42~0,烈焰飛鳳S 闇黑版~9H4L0P7C~!blade-BXG-15-BXG-15-BL-PRD-947110-00w,巨岩雄獅~5hpbp4LM~0,暴風巨神~zHPCp2XK~0,龍騎士S BXG-22~0ppL3hQ9~0,鋼鐵人~PGNMFwmx~!blade-BXG-29-01-BXG-29-01-BL-PRD-980841-01w,薩諾斯~Z1fdc1Ng~!blade-BXG-29-02-BXG-29-02-BL-PRD-980841-02w,蜘蛛人~d4RsBY6B~!blade-BXG-30-01-BXG-30-01-BL-PRD-980858-01w,猛毒~pv2DxrVJ~!blade-BXG-30-02-BXG-30-02-BL-PRD-980858-02w,路克天行者~kgPdYtKS~1,達斯維達~ZRzChgJT~1,曼達洛人~qM0QDqJ7~!blade-BXG-34-01-BXG-34-01-BL-PRD-982357-01w,星區長吉迪恩~nsGfyPvs~!blade-BXG-34-02-BXG-34-02-BL-PRD-982357-02w,柯博文~fdtS3ZGm~1,密卡登~gZ78f6Gr~1,金剛王~DPQc3yYK~!blade-BXG-37-01-BXG-37-01-BL-PRD-982487-01w,天王星~JRk2Lwwy~!blade-BXG-37-02-BXG-37-02-BL-PRD-982487-02w,雄獅獠牙~cSYHTC43~!T4-60Ap,飛龍懸浮 金屬塗層:紫~63G90V5~!blade-BXG-39-BXG-39-BL-PRD-993643-00w,飛龍懸浮 DMM 抽獎A獎~Y4WzLMQz~!blade-BXG-39-BXG-39-BL-PRD-993636-00w,暴龍~fV3mTgMm~1,滄龍~gbZbP370~1,翼龍~0R1KP33y~0,棘龍~VWGygS6f~0,福音戰士至尊 B 零號機版本~yJ5cGCv~!blade-BXG-57-01-BXG-57-01-BL-PRD-085683-01w,福音戰士勇氣 A 初號機版本~5hrLVZYW~!blade-BXG-57-02-BXG-57-02-BL-PRD-085683-02w,福音戰士九尾 T ２號機版本~jvnv9Y1Z~!blade-BXG-57-03-BXG-57-03-BL-PRD-085683-03w,榮耀戰神 金屬塗層:藍色~zhbGfyfW~!blade-BXG-63-BXG-63-BL-PRD-436699-00w,迪卡狂怒 FT 複合型態~F4VQLm5f~!blade-BXG-70-01-BXG-70-01-BL-PRD-700700-01w,迪卡狂怒 FT 力量型態~ycrZg9jg~!blade-BXG-70-21-BXG-70-21-BL-PRD-700700-21w,惡魔至尊~rKwhY9Jq~1,魔犬幽冥~k6mTpQBF~1,騎士圓甲改造組 UX-10-05~XZgwDSyx~b939542-05w,騎士圓甲改造組 UX-10-06~tw8hxP2R~b939542-06w,鳳凰翔羽(黑)~pBs7Rrdq~2,惡魔勇氣~5X46XXPs~0,天馬九尾~svbrfZzS~0,焰神勇氣~SGDZkg5~0,飛龍懸浮~d0F6m35G~!blade-UX-21-03-UX-21-03-BL-PRD-085546-03w,1-50~LDcqNgs6~r072447-00w,1-60~S4v6vKYq~r305725-01w,3-60~Hf6SBgmD~r910381-00w,7-60~mVxhG1RP~r096092-03w,9-60~JRKGkFMb~r982128-00w,B~d09xtc04~b910497-00w,E~gbd3zYWz~b914617-01w,FB~gLb9pz2p~b098775-03w,H~5W3hBwnr~b914570-05w,K~JWbHX56V~b939627-04w,L~TD7DLkR9~b939535-00w,LR~84jtp7V7~b939559-00w,R~4wJKmZFp~b305718-02w,輔助H~RkFJN99P~a098775-01w,輔助W~XZx4mKd3~1,1-70~6cWS1KbX~r085683-02w,4-50~SXwG59JW~r096122-00w,5-60~S7B7ktcr~r913030-00w,6-60~gZyzx0Rf~r939597-00w,9-70~hzHMRL7~r956969-01w,J~spsTd1d3~b997627-00w,LO~B2r1q1B9~b930907-00w,T~VYyhmJQ5~b910398-00w,UF~CKSBthC9~b982432-01w,UN~0SHZ0Sn~b097266-00w,W~21VVVP2D~!BT-EVE-958772-03w,0-60~CNQcsDf~r097242-00w,4-60~q3R69FMy~r305732-01w,7-55~3y5xGdgc~r097167-01w,7-70~53nmJcY~r997610-02w,8-70~6J4xmV7k~r097266-00w,F~zdJJwwW~b910381-00w,FF~GQddSgB5~b096122-00w,LF~CZjVzD3~b912965-05w,NR~k64nLpVS~2,O~bMP9BGLB~b912972-01w,OP~9kyDzPDT~2,P~8g692mj8~b980841-02w,U~99kvXbQ5~b914556-00w,輔助F~8g8Q0pTM~a097242-00w,輔助G~gb7nxyBH~a100003-00w,輔助J~RkHcPyKV~a993889-00w,0-70~ks17XmFj~r085683-01w,0-80~Y5y8mYT~r100001-01w,3-70~5DqNTjL~r914570-03w,7-80~FL7jBGry~r939511-01w,9-80~TBnyYjNm~r305725-02w,D~fdqdcBXD~b914570-01w,GR~FqXbgtHT~b956969-01w,GU~yBFktZKg~b096146-01w,HN~WNspkVQX~b910565-00w,TK~DP2gdCb6~b995678-00w,WB~dJkDfpfK~b956983-01w,Y~nqncxxrS~!BT-EVE-088899-00w,輔助K~7tXdDbyk~a072447-00w,輔助S~SDDTnTTj~a993872-00w,4-55~b5tknBDf~r989002-02w,5-70~hx4tBvKV~r305749-02w,6-70~YBRR0gBq~r939580-00w,9-65~hxXTHhHk~r096146-03w,M-85~r84YMht~r939528-00w,A~67P0pKRr~b941460-00w,C~35VFMDzD~b914563-00w,GP~35p4JG5F~b914464-00w,I~NgmzmqX2~b097259-00w,TP~99n11Swy~b939504-00w,WW~PsXbxB2x~b096153-00w,Z~F4v6h2Qx~b080558-00w,輔助E~bMrcwxsB~!AB-EVE-088899-00w,輔助T~7JV9VPN6~a994350-00w,輔助V~tPNXjsHy~a097266-00w,輔助Z~zVFrNL8L~a096153-00w,1-80~pv1WbSQX~r305718-02w,3-80~1Yz5c1ZR~r305732-02w,3-85~1jsfKXB~r096092-04w,4-70~TDMwLcSR~r305718-01w,6-80~4g5HcBfr~r957492-00w,DB~JNqbHNS~b953654-00w,G~hxDv2wrP~b914594-01w,GB~LhCn6cvc~b305718-01w,GF~b5RxD0dB~b913092-00w,HT~0y12LzKG~b305725-02w,S~hhvNw09~b913061-00w,V~XZmBgtjK~b939597-00w,輔助A~J46y2jN~a930495-00w,輔助B~4gN9wBGp~a085683-01w,輔助C~Sw6KHqwk~a939627-02w,輔助D~zHCTnyRn~a995678-00w,輔助M~8DzkVyNY~a956983-02w,2-60~Sw53PftL~r914563-00w,2-70~6JBNgF3m~r993773-00w,2-80~fV2xdjHX~r096092-05w,4-80~8gn78PWr~r305749-01w,5-80~Y71N9MCR~r912972-01w,BS~SXT4QDtC~b939528-00w,GN~HTTS6Wc8~b914600-00w,M~rRRWGK0j~b939580-00w,MN~b06bnWt~b956983-04w,N~skPxz54~b910404-00w,Q~LddNyspT~b914532-01w,RA~kbtyW4j~b946816-01w,Tr~m5tyNsjb~b930495-00w,輔助O~nSKQy2V~a096146-01w,輔助R~hFrN9b1W~a930907-00w,8-80~BHsjN51n~!ratchet-UX-21-03-8-80-RC-PRD-085546-03w,DS~TBBBdBhB~b100001-01w`;
+const IMG_COMMON=['transparent-Photoroom.webp','image.webp','image.png','transparent-Photoroom.png'];
+const IMG_PRE={r:'RC-PRD-',b:'BT-PRD-',a:'AB-PRD-',l:'BL-PRD-'};
+function decTail(t){
+  if(/^[0-3]$/.test(t)) return IMG_COMMON[+t];
+  const ext=t.slice(-1)==='p'?'.png':'.webp', body=t.slice(0,-1);
+  if(body.charAt(0)==='!') return body.slice(1)+ext;
+  const p=IMG_PRE[body.charAt(0)];
+  return p? p+body.slice(1)+ext : body+ext;
+}
+const IMG={};
+IMG_RAW.split(',').forEach(s=>{const p=s.split('~');
+  if(p.length===3) IMG[p[0]]='https://i.ibb.co/'+p[1]+'/'+decTail(p[2]);});
+const partImg=n=>n?(IMG[n]||''):'';
 
 /* =======================================================================
    音效（Web Audio + 語音合成，不需外部檔案）
@@ -1032,7 +1077,7 @@ const FIELDS=[
   {key:'assist', label:'輔助戰刃 ASSIST（選填）'}
 ];
 const MAXBEY=3;
-const blank=()=>({blade:'',ratchet:'',bit:'',assist:''});
+const blank=()=>({blade:'',ratchet:'',bit:'',assist:'',done:false});
 const sel={A:[blank()],B:[blank()]};   // 每邊最多三顆陀螺
 const active={A:0,B:0};                // 本回合上場的是第幾顆
 const CN=['①','②','③'];
@@ -1059,7 +1104,7 @@ function wireCombo(cb,side,idx,key){
   list.addEventListener('mousedown',e=>{
     const o=e.target.closest('.opt'); if(!o||!o.dataset.name)return;
     e.preventDefault();
-    sel[side][idx][key]=o.dataset.name; inp.value=o.dataset.name;
+    sel[side][idx][key]=o.dataset.name; sel[side][idx].done=false; inp.value=o.dataset.name;
     list.classList.remove('show'); inp.blur(); refresh(side);
   });
   inp.addEventListener('blur',()=>setTimeout(()=>{
@@ -1067,7 +1112,7 @@ function wireCombo(cb,side,idx,key){
     if(inp.value!==cur()) inp.value=cur();
   },120));
   cb.querySelector('.clr').addEventListener('click',()=>{
-    sel[side][idx][key]=''; inp.value=''; refresh(side);
+    sel[side][idx][key]=''; sel[side][idx].done=false; inp.value=''; refresh(side);
   });
 }
 
@@ -1081,6 +1126,25 @@ function tierTags(s){
   }).join(' ');
 }
 
+/* 正式格式：戰刃 [輔助戰刃] 固鎖 軸心 */
+function officialName(s){
+  return [s.blade,s.assist,s.ratchet,s.bit].filter(Boolean).join(' ');
+}
+const SLOT=[{k:'blade',z:'戰刃'},{k:'assist',z:'輔助戰刃'},{k:'ratchet',z:'固鎖'},{k:'bit',z:'軸心'}];
+function stripHTML(s){
+  return `<div class="strip">${SLOT.map(o=>{
+    const v=s[o.k];
+    if(!v) return `<div class="cell off"><div class="ph empty"><span class="fb">未使用</span></div>
+      <b>—</b><span class="slot">${o.z}</span></div>`;
+    const url=partImg(v), p=find(o.k,v);
+    return `<div class="cell">
+      <div class="ph">${url?`<img src="${url}" alt="${v}" loading="lazy" referrerpolicy="no-referrer">`
+                        :`<span class="fb">${v}</span>`}</div>
+      <b>${v}</b><span class="slot">${o.z}</span></div>`;
+  }).join('')}</div>`;
+}
+function beyReady(s){ return !!(s.blade&&s.ratchet&&s.bit); }
+
 function buildCard(side){
   const card=el('card'+side);
   card.innerHTML='<h3>'+(side==='A'?'TEAM A 陣容':'TEAM B 陣容')+'</h3>'+
@@ -1088,20 +1152,36 @@ function buildCard(side){
       <div class="bey">
         <div class="beyHead">
           <span class="no">${CN[i]} 陀螺 ${i+1}</span><span class="sp"></span>
+          ${s.done?`<button class="edit" data-i="${i}">編輯</button>`:''}
           ${sel[side].length>1?`<button class="del" data-side="${side}" data-i="${i}">移除這顆</button>`:''}
         </div>
-        ${FIELDS.map(f=>`<div class="row"><label>${f.label}</label>
+        ${s.done ? stripHTML(s)+
+          `<div class="official">${officialName(s)}
+             <small>${(s.blade&&find('blade',s.blade)&&find('blade',s.blade).type)||''}</small></div>`
+        : FIELDS.map(f=>`<div class="row"><label>${f.label}</label>
           <div class="cb" data-side="${side}" data-i="${i}" data-key="${f.key}">
             <input type="text" placeholder="輸入關鍵字搜尋…" autocomplete="off">
             <button class="clr" title="清除">×</button>
             <div class="list"></div>
-          </div></div>`).join('')}
-        <div class="summary">${comboText(s)?comboText(s)+' <small>'+tierTags(s)+'</small>':'—'}</div>
+          </div></div>`).join('')+
+          `<div class="summary">${comboText(s)||'—'}</div>
+           <button class="okBtn" data-i="${i}" ${beyReady(s)?'':'disabled'}>
+             ${beyReady(s)?'確認這顆':'請先選好 戰刃 / 固鎖 / 軸心'}</button>`}
       </div>`).join('')+
     `<button class="addBey" data-side="${side}" ${sel[side].length>=MAXBEY?'disabled':''}>
        ${sel[side].length>=MAXBEY?'已滿 3 顆':'＋ 新增下一顆陀螺（'+sel[side].length+'/3）'}</button>`;
 
   card.querySelectorAll('.cb').forEach(cb=>wireCombo(cb,side,+cb.dataset.i,cb.dataset.key));
+  card.querySelectorAll('.okBtn').forEach(b=>b.addEventListener('click',()=>{
+    sel[side][+b.dataset.i].done=true; refresh(side);
+  }));
+  card.querySelectorAll('.edit').forEach(b=>b.addEventListener('click',()=>{
+    sel[side][+b.dataset.i].done=false; refresh(side);
+  }));
+  // 圖片載不出來就退回文字，不留破圖
+  card.querySelectorAll('.cell .ph img').forEach(im=>im.addEventListener('error',()=>{
+    const ph=im.parentNode; ph.innerHTML='<span class="fb">'+(im.alt||'無圖')+'</span>';
+  }));
   card.querySelectorAll('.del').forEach(b=>b.addEventListener('click',()=>{
     sel[side].splice(+b.dataset.i,1); refresh(side);
   }));
