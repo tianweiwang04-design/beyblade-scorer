@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>BEYBLADE X 比賽計分板</title>
 <meta name="description" content="Beyblade X 三對三比賽計分板：官方 Finish 計分、3-2-1 Go Shoot 倒數、回合戰報與配置統計。">
 <meta name="theme-color" content="#04060f">
@@ -28,6 +28,7 @@
   --bGlow:rgba(45,140,255,.42); --bSoft:rgba(27,95,214,.32);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 html{min-height:100%;background:var(--bg);overflow-x:hidden}
 body{
   margin:0;min-height:100vh;min-height:100dvh;background:transparent;
@@ -87,17 +88,17 @@ button{font-family:inherit;color:inherit;cursor:pointer;border:0;background:none
 .mrow.on em{color:#04060f;background:linear-gradient(90deg,var(--a1),var(--b1));border-color:transparent}
 
 /* ---------- board ---------- */
-.board{display:grid;grid-template-columns:1fr 170px 1fr;align-items:center;align-content:center;
+.board{display:grid;grid-template-columns:1fr 210px 1fr;align-items:center;align-content:center;
   gap:6px;padding:10px 12px;max-width:1500px;margin:0 auto;width:100%;
   flex:1 0 auto}
 .side{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
 /* 隊名：整個框就是一顆按鈕，點下去才換成輸入框 —— 沒有任何死角 */
 .hide{display:none!important}
-.tbox{width:100%;max-width:330px;position:relative;z-index:3}
+.tbox{width:100%;max-width:390px;position:relative;z-index:3}
 .tnameBtn,.tname{
   display:block;box-sizing:border-box;width:100%;margin:0;
   background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.16);border-radius:14px;
-  padding:13px 14px;text-align:center;font-family:inherit;font-size:15px;font-weight:800;
+  padding:15px 16px;text-align:center;font-family:inherit;font-size:16px;font-weight:800;
   letter-spacing:.26em;color:var(--dim);outline:none;transition:.15s;
   -webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent}
 .tnameBtn{cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -110,7 +111,7 @@ button{font-family:inherit;color:inherit;cursor:pointer;border:0;background:none
 .B .tname{border-color:var(--b1);box-shadow:0 0 0 3px rgba(27,95,214,.16)}
 .tname::placeholder{color:#4a4d61;letter-spacing:.1em}
 .score{
-  font-size:clamp(120px,26vw,300px);line-height:.86;font-weight:900;font-variant-numeric:tabular-nums;
+  font-size:clamp(120px,min(30vw,40vh),440px);line-height:.86;font-weight:900;font-variant-numeric:tabular-nums;
   -webkit-text-stroke:3px transparent;background-clip:text;-webkit-background-clip:text;color:transparent;
   filter:drop-shadow(0 0 22px rgba(224,31,45,.35));user-select:none;transition:transform .12s;
   /* 行高 .86 讓字形溢出自己的框，會蓋住上方的隊名按鈕 —— 分數純顯示，不吃點擊 */
@@ -136,7 +137,7 @@ button{font-family:inherit;color:inherit;cursor:pointer;border:0;background:none
 .cline .txt{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cline .tp{font-size:9px;color:var(--dim);flex:none}
 /* 本回合上場的那顆 */
-.cline{cursor:pointer;border:1px solid transparent;border-radius:999px;padding:2px 9px 2px 3px;
+.cline{cursor:pointer;border:1px solid transparent;border-radius:999px;padding:3px 11px 3px 4px;font-size:13px;
   opacity:.42;transition:.15s}
 .cline:hover{opacity:.8}
 .cline.on{opacity:1;background:rgba(255,255,255,.07)}
@@ -145,12 +146,12 @@ button{font-family:inherit;color:inherit;cursor:pointer;border:0;background:none
 .combos.single .cline{opacity:1;cursor:default;border-color:transparent!important;background:none;box-shadow:none}
 
 /* finish buttons */
-.fins{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;width:100%;max-width:330px;margin-top:4px}
-.fin{border:1px solid var(--line);border-radius:12px;padding:9px 6px;background:rgba(255,255,255,.04);
+.fins{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;width:100%;max-width:390px;margin-top:8px}
+.fin{border:1px solid var(--line);border-radius:14px;padding:12px 8px;background:rgba(255,255,255,.04);
   display:flex;flex-direction:column;align-items:center;gap:2px;transition:.15s}
 .fin:active{transform:scale(.96)}
-.fin b{font-size:13px;font-weight:800;letter-spacing:.04em}
-.fin i{font-style:normal;font-size:10px;color:var(--dim)}
+.fin b{font-size:15px;font-weight:800;letter-spacing:.04em}
+.fin i{font-style:normal;font-size:11px;color:var(--dim)}
 .A .fin{border-color:rgba(224,31,45,.34)}
 .B .fin{border-color:rgba(27,95,214,.4)}
 .A .fin:hover{transform:translateY(-1px);border-color:var(--a1);
@@ -159,19 +160,19 @@ button{font-family:inherit;color:inherit;cursor:pointer;border:0;background:none
 .B .fin:hover{transform:translateY(-1px);border-color:var(--b2);
   background:linear-gradient(180deg,rgba(63,208,240,.18),rgba(27,95,214,.16));
   box-shadow:0 0 0 1px rgba(63,208,240,.35),0 8px 26px -8px var(--bGlow)}
-.adj{display:flex;gap:6px;width:100%;max-width:330px;margin-top:2px}
+.adj{display:flex;gap:8px;width:100%;max-width:390px;margin-top:6px}
 .adj button{flex:1;border:1px solid var(--line);border-radius:10px;padding:7px;font-size:14px;font-weight:700;
   background:rgba(255,255,255,.03);color:var(--dim)}
 .adj button:hover{color:var(--txt);background:rgba(255,255,255,.09)}
 
 /* ---------- center ---------- */
 .center{display:flex;flex-direction:column;align-items:center;gap:14px}
-.go{width:88px;height:88px;border-radius:50%;border:2px solid rgba(255,255,255,.22);
+.go{width:106px;height:106px;border-radius:50%;border:2px solid rgba(255,255,255,.22);
   background:rgba(255,255,255,.04);display:grid;place-items:center;position:relative;transition:.2s;
   margin-bottom:16px;flex:none}
 .go:hover{border-color:#fff;background:rgba(255,255,255,.1);
   box-shadow:0 0 0 6px rgba(255,255,255,.05),-14px 0 44px -6px var(--aGlow),14px 0 44px -6px var(--bGlow)}
-.go svg{width:26px;height:26px;fill:currentColor;margin-left:3px}
+.go svg{width:31px;height:31px;fill:currentColor;margin-left:3px}
 .go span{position:absolute;bottom:-20px;font-size:10px;letter-spacing:.22em;color:var(--dim)}
 .rst{border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-size:11px;
   letter-spacing:.18em;color:var(--dim);background:rgba(255,255,255,.03)}
@@ -282,6 +283,9 @@ button{font-family:inherit;color:inherit;cursor:pointer;border:0;background:none
 .summary{margin-top:12px;border-top:1px dashed var(--line);padding-top:14px;margin-bottom:14px;
   font-size:14px;font-weight:700;letter-spacing:.03em;min-height:20px}
 .summary small{display:block;font-weight:500;font-size:11px;color:var(--dim);letter-spacing:.1em;margin-top:3px}
+
+
+
 /* ---------- 戰報 / 統計 ---------- */
 .ltabs{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
 .ltabs .sp{flex:1}
@@ -373,6 +377,48 @@ table.st tr:hover td{background:rgba(255,255,255,.03)}
   .cline{font-size:10px}.cline .tp{display:none}
   .cfgGrid{grid-template-columns:1fr}
 }
+/* =====================================================================
+   手機橫屏：專注模式 —— 只留隊名、分數、四顆 Finish、START / RESET
+   ±1 收成分數兩側的小圓鈕，按錯還救得回來
+   ===================================================================== */
+.scoreRow{display:contents}
+.miniAdj{display:none}
+@media (orientation:landscape) and (max-height:560px){
+  .top{padding-top:calc(4px + env(safe-area-inset-top));padding-bottom:4px;gap:5px}
+  .brand{display:none}
+  .tbtn{padding:5px 10px;font-size:10px}
+  .board{grid-template-columns:1fr 132px 1fr;gap:4px;padding:2px 6px 4px;
+         padding-left:calc(6px + env(safe-area-inset-left));
+         padding-right:calc(6px + env(safe-area-inset-right))}
+  .side{gap:2px}
+  /* 隱藏：陀螺清單、原本那排 ±1、頁尾、設定面板 */
+  .combos,.adj,.src{display:none!important}
+  .cfg{display:none!important}
+
+  .tbox{max-width:100%}
+  .tnameBtn,.tname{padding:7px 10px;font-size:12px;letter-spacing:.14em;border-radius:10px}
+
+  /* 分數與 ±1 小圓鈕同一列 */
+  .scoreRow{display:flex;align-items:center;justify-content:center;gap:8px;width:100%}
+  .score{font-size:min(30vh,17vw);line-height:.9;flex:none}
+  .miniAdj{display:flex;flex-direction:column;gap:6px;flex:none;order:2}
+  .A .scoreRow .miniAdj{order:-1}
+  .miniAdj button{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);
+    background:rgba(255,255,255,.05);font-size:15px;font-weight:800;color:var(--dim);line-height:1}
+  .miniAdj button:active{transform:scale(.92)}
+  .A .miniAdj button{border-color:rgba(224,31,45,.4)}
+  .B .miniAdj button{border-color:rgba(27,95,214,.45)}
+
+  .fins{grid-template-columns:repeat(2,1fr);gap:5px;margin-top:4px;max-width:100%}
+  .fin{padding:7px 4px;border-radius:10px}
+  .fin b{font-size:12px}.fin i{font-size:9px}
+  .center{gap:6px}
+  .go{width:64px;height:64px;margin-bottom:13px}
+  .go svg{width:20px;height:20px}
+  .go span{bottom:-16px;font-size:9px}
+  .tofirst{font-size:9px;gap:4px}
+  .rst{padding:6px 13px;font-size:10px;letter-spacing:.12em}
+}
 </style>
 </head>
 <body>
@@ -402,7 +448,10 @@ table.st tr:hover td{background:rgba(255,255,255,.03)}
       <button type="button" class="tnameBtn" id="nameBtnA" title="點一下改成自己的隊名">TEAM A</button>
       <input class="tname hide" id="nameA" value="TEAM A" spellcheck="false" maxlength="18" placeholder="輸入隊名">
     </div>
-    <div class="score" id="scoreA">0</div>
+    <div class="scoreRow">
+      <div class="score" id="scoreA">0</div>
+      <div class="miniAdj" data-side="A"><button data-d="-1" title="減 1 分">−</button><button data-d="1" title="加 1 分">＋</button></div>
+    </div>
     <div class="combos" id="comboA"></div>
     <div class="fins" data-side="A">
       <button class="fin" data-p="1" data-f="spin"><b>Spin</b><i>回轉勝 +1</i></button>
@@ -432,7 +481,10 @@ table.st tr:hover td{background:rgba(255,255,255,.03)}
       <button type="button" class="tnameBtn" id="nameBtnB" title="點一下改成自己的隊名">TEAM B</button>
       <input class="tname hide" id="nameB" value="TEAM B" spellcheck="false" maxlength="18" placeholder="輸入隊名">
     </div>
-    <div class="score" id="scoreB">0</div>
+    <div class="scoreRow">
+      <div class="score" id="scoreB">0</div>
+      <div class="miniAdj" data-side="B"><button data-d="-1" title="減 1 分">−</button><button data-d="1" title="加 1 分">＋</button></div>
+    </div>
     <div class="combos" id="comboB"></div>
     <div class="fins" data-side="B">
       <button class="fin" data-p="1" data-f="spin"><b>Spin</b><i>回轉勝 +1</i></button>
@@ -661,7 +713,7 @@ document.querySelectorAll('.fins').forEach(box=>{
     add(side,+b.dataset.p);                // 音效交給 add 判斷：一般加分 vs 直接獲勝
   }));
 });
-document.querySelectorAll('.adj').forEach(box=>{
+document.querySelectorAll('.adj,.miniAdj').forEach(box=>{
   const side=box.dataset.side;
   box.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>add(side,+b.dataset.d)));
 });
@@ -1320,6 +1372,11 @@ el('btnCfg').addEventListener('click',e=>{
 });
 
 render();
+
+/* ---------- 鎖住縮放（Safari 分頁會忽略 user-scalable，得自己擋） ---------- */
+['gesturestart','gesturechange','gestureend'].forEach(t=>
+  document.addEventListener(t,e=>e.preventDefault(),{passive:false}));
+document.addEventListener('dblclick',e=>e.preventDefault(),{passive:false});
 
 /* ---------- PWA：離線與加入主畫面 ---------- */
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){
