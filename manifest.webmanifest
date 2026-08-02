@@ -1,0 +1,19 @@
+{
+  "name": "陀螺對戰計分板",
+  "short_name": "BEY SCORER",
+  "description": "三對三賽制的陀螺比賽計分板：官方 Finish 計分、3-2-1 Go Shoot 倒數、回合戰報與配置統計。",
+  "lang": "zh-Hant",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#04060f",
+  "theme_color": "#04060f",
+  "categories": ["sports", "utilities"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
