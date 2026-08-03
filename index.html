@@ -29,7 +29,7 @@
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%}
-html{height:100%;overflow:hidden;
+html{min-height:100%;overflow-x:hidden;
   background:
     /* 細網格，像 X 賽道的紋理 */
     repeating-linear-gradient(90deg,rgba(255,255,255,.028) 0 1px,transparent 1px 68px),
@@ -46,14 +46,11 @@ html{height:100%;overflow:hidden;
     var(--bg);
   background-repeat:no-repeat;background-color:var(--bg)}
 body{
-  margin:0;height:100%;overflow:hidden;background:transparent;
+  margin:0;min-height:100vh;min-height:100dvh;background:transparent;
   color:var(--txt);font-family:"Chakra Petch",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC",sans-serif;
-  display:flex;flex-direction:column;overscroll-behavior:none;
+  overflow-x:hidden;display:flex;flex-direction:column;
 }
-/* 頁面本身不捲動，只有這一層會捲 —— 背景因此永遠等於一個視窗，不會露出黑邊 */
-.scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;
-  -webkit-overflow-scrolling:touch;overscroll-behavior:contain;
-  display:flex;flex-direction:column;position:relative;z-index:1}
+.scroll{display:contents}
 .center{position:relative;z-index:1}
 .top,.board,.cfg,.src{position:relative;z-index:1}
 button{font-family:inherit;color:inherit;cursor:pointer;border:0;background:none}
@@ -294,6 +291,12 @@ button{font-family:inherit;color:inherit;cursor:pointer;border:0;background:none
 .lact{border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:11px;
   letter-spacing:.06em;color:var(--dim)}
 .lact:hover{color:var(--txt);border-color:rgba(255,255,255,.45)}
+#diag{position:fixed;left:8px;right:8px;bottom:8px;z-index:200;display:none;
+  background:rgba(0,0,0,.88);border:1px solid #3af;border-radius:12px;padding:10px 12px;
+  font:11px/1.55 ui-monospace,Menlo,monospace;color:#9fe;white-space:pre-wrap;word-break:break-all}
+#diag.show{display:block}
+#diagEdge{position:fixed;left:0;right:0;bottom:0;height:2px;background:#0f0;z-index:199;display:none}
+#diagEdge.show{display:block}
 .empty{color:var(--dim);font-size:12px;padding:28px 0;text-align:center;letter-spacing:.08em}
 
 .rnd{display:grid;grid-template-columns:34px 1fr 96px 1fr;align-items:center;gap:10px;
@@ -427,6 +430,7 @@ table.st tr:hover td{background:rgba(255,255,255,.03)}
   <div class="sp"></div>
   <button class="tbtn" id="btnCfg">陀螺配置</button>
   <button class="tbtn" id="btnLog">戰報</button>
+  <button class="tbtn" id="btnDiag">🩺</button>
   <button class="tbtn" id="btnAudio">🎙 倒數錄音</button>
   <div class="menuWrap">
     <button class="tbtn" id="btnSound" aria-expanded="false">🔊 音效 ▾</button>
@@ -541,6 +545,9 @@ table.st tr:hover td{background:rgba(255,255,255,.03)}
     <button class="close" id="afClose">完成</button>
   </div>
 </div>
+
+<div id="diagEdge"></div>
+<div id="diag"></div>
 
 <div class="cd" id="cd"><div class="n" id="cdn">3</div></div>
 
@@ -1372,6 +1379,38 @@ el('btnCfg').addEventListener('click',e=>{
 });
 
 render();
+
+/* ---------- 診斷面板：找出底部黑帶的真正成因 ---------- */
+(function(){
+  const box=el('diag'), edge=el('diagEdge');
+  const probe=document.createElement('div');
+  probe.style.cssText='position:fixed;top:0;left:0;visibility:hidden;'+
+    'padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)';
+  document.body.appendChild(probe);
+  const dump=()=>{
+    const cs=getComputedStyle(probe);
+    const de=document.documentElement, vv=window.visualViewport;
+    box.textContent=
+      'standalone      '+(window.navigator.standalone)+'  |  dpr '+devicePixelRatio+'\n'+
+      'innerHeight     '+innerHeight+'\n'+
+      'outerHeight     '+outerHeight+'\n'+
+      'html.clientH    '+de.clientHeight+'\n'+
+      'html.scrollH    '+de.scrollHeight+'\n'+
+      'body.offsetH    '+document.body.offsetHeight+'\n'+
+      'visualViewport  '+(vv?Math.round(vv.height)+' offsetTop '+Math.round(vv.offsetTop):'無')+'\n'+
+      'screen          '+screen.width+'×'+screen.height+'\n'+
+      '100dvh 實測     '+dvh()+'\n'+
+      'safe-area  上'+cs.paddingTop+' 下'+cs.paddingBottom+' 左'+cs.paddingLeft+' 右'+cs.paddingRight+'\n'+
+      'scrollY         '+Math.round(scrollY);
+  };
+  const dvh=()=>{const t=document.createElement('div');
+    t.style.cssText='position:absolute;top:0;height:100dvh;width:1px;visibility:hidden';
+    document.body.appendChild(t); const v=t.offsetHeight; t.remove(); return v;};
+  el('btnDiag').addEventListener('click',()=>{
+    box.classList.toggle('show'); edge.classList.toggle('show'); dump();
+  });
+  ['resize','orientationchange','scroll'].forEach(t=>addEventListener(t,()=>{ if(box.classList.contains('show')) dump(); }));
+})();
 
 /* ---------- 鎖住縮放（Safari 分頁會忽略 user-scalable，得自己擋） ---------- */
 ['gesturestart','gesturechange','gestureend'].forEach(t=>
