@@ -29,7 +29,7 @@
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adjust:100%}
-html{min-height:100%;overflow-x:hidden;
+html{height:100%;overflow:hidden;
   background:
     /* 細網格，像 X 賽道的紋理 */
     repeating-linear-gradient(90deg,rgba(255,255,255,.028) 0 1px,transparent 1px 68px),
@@ -46,12 +46,14 @@ html{min-height:100%;overflow-x:hidden;
     var(--bg);
   background-repeat:no-repeat;background-color:var(--bg)}
 body{
-  margin:0;min-height:100vh;min-height:100dvh;background:transparent;
+  margin:0;height:100%;overflow:hidden;background:transparent;
   color:var(--txt);font-family:"Chakra Petch",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC",sans-serif;
-  overflow-x:hidden;overscroll-behavior-y:none;
-  display:flex;flex-direction:column;
+  display:flex;flex-direction:column;overscroll-behavior:none;
 }
-/* 獨立的固定背景層：自成一個合成層，捲動時完全不重繪 */
+/* 頁面本身不捲動，只有這一層會捲 —— 背景因此永遠等於一個視窗，不會露出黑邊 */
+.scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+  display:flex;flex-direction:column;position:relative;z-index:1}
 .center{position:relative;z-index:1}
 .top,.board,.cfg,.src{position:relative;z-index:1}
 button{font-family:inherit;color:inherit;cursor:pointer;border:0;background:none}
@@ -436,6 +438,7 @@ table.st tr:hover td{background:rgba(255,255,255,.03)}
   </div>
 </div>
 
+<div class="scroll">
 <div class="board">
   <!-- A -->
   <div class="side A">
@@ -510,6 +513,8 @@ table.st tr:hover td{background:rgba(255,255,255,.03)}
 </div>
 
 <div class="src">零件資料、天梯與零件照片整理自 <a href="https://stan-yao.github.io/beyblade_x_tier/" target="_blank" rel="noreferrer">Beyblade X Tier 台灣天梯情報站</a>｜計分規則依 TAKARA TOMY《BEYBLADE X REGULATION》</div>
+</div>
+
 
 <div class="sheetWrap" id="audioSheet">
   <div class="sheet">
